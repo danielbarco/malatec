@@ -1,11 +1,10 @@
 
-.DS_Store
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 .DS_Store
+.venv_notebooks
 
 # C extensions
 *.so

@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .DS_Store
 venv_notebooks
+venv_testing
 
 # C extensions
 *.so
@@ -132,3 +133,4 @@ dmypy.json
 .pyre/
 Notebooks/Foundations_CH.csv
 NIH-NLM-ThinBloodSmearsPf
+.vscode/settings.json

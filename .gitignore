@@ -6,6 +6,7 @@ __pycache__/
 .DS_Store
 venv_notebooks
 venv_testing
+data-science-bowl-2018
 
 # C extensions
 *.so

@@ -7,7 +7,7 @@ __pycache__/
 venv_notebooks
 venv_testing
 data-science-bowl-2018
-Images
+Images/
 *.csv
 NIH-NLM-ThinBloodSmearsPf
 

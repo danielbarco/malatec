@@ -9,6 +9,8 @@ venv_testing
 data-science-bowl-2018
 Images/
 *.csv
+*.jpg
+*.png
 NIH-NLM-ThinBloodSmearsPf
 
 # C extensions

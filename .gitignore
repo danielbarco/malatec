@@ -7,6 +7,8 @@ __pycache__/
 venv_notebooks
 venv_testing
 data-science-bowl-2018
+Images
+*.csv
 
 # C extensions
 *.so
@@ -132,9 +134,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-Notebooks/Foundations_CH.csv
-NIH-NLM-ThinBloodSmearsPf
 .vscode/settings.json
-Notebooks/labels.csv
-Notebooks/short_polygon.csv
-Notebooks/malaria_multiplot.png
+

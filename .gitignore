@@ -9,6 +9,7 @@ venv_testing
 data-science-bowl-2018
 NIH-NLM-ThinBloodSmearsPf
 *.csv
+*.pkl
 .vscode
 
 # C extensions

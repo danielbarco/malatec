@@ -1,4 +1,4 @@
 # Malatec
-Faster, better and cheaper moblie malaria detection
+Faster, better and cheaper mobile malaria detection
 
 

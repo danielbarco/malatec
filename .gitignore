@@ -11,6 +11,7 @@ NIH-NLM-ThinBloodSmearsPf
 *.csv
 *.pkl
 .vscode
+cropped
 
 # C extensions
 *.so

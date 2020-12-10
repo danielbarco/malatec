@@ -13,6 +13,9 @@ NIH-NLM-ThinBloodSmearsPf
 .vscode
 cropped
 masks
+test
+train
+test_final
 
 # C extensions
 *.so
@@ -140,3 +143,4 @@ dmypy.json
 .pyre/
 
 
+test/IMG_20150611_104404/img/slice_IMG_20150611_104404_0_512_256_256_0.png

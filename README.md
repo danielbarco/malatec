@@ -2,6 +2,7 @@
 Faster, better and cheaper mobile malaria detection
 
 To start the Docker container first install Docker and then tensorflow for docker image. 
+
 https://www.tensorflow.org/install/docker?hl=uk \
 https://hub.docker.com/r/tensorflow/tensorflow/
 

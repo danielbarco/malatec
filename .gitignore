@@ -17,6 +17,9 @@ test
 train
 test_final
 logs
+weights
+YOLOV2-Tensorflow-2.0
+YOLOV2-Tensorflow-2.0/
 
 # C extensions
 *.so
@@ -144,6 +147,4 @@ dmypy.json
 .pyre/
 
 
-Notebooks/unet_tf2.ipynb
-YOLOV2-Tensorflow-2.0
-YOLOV2-Tensorflow-2.0/
+

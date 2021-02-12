@@ -20,6 +20,9 @@ logs
 weights
 YOLOV2-Tensorflow-2.0
 YOLOV2-Tensorflow-2.0/
+data
+Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
+Notebooks/output
 
 # C extensions
 *.so

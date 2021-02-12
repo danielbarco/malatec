@@ -30,7 +30,7 @@ gast==0.3.3
 # google-auth==1.23.0
 # google-auth-oauthlib==0.4.2
 # google-pasta==0.2.0
-grpcio==1.33.2
+grpcio==1.32.0
 h5py==2.10.0
 html5lib==1.0.1
 idna==2.10
@@ -65,7 +65,7 @@ nbformat==5.0.7
 nest-asyncio==1.4.1
 networkx==2.5
 notebook==6.1.4
-numpy==1.18.5
+numpy==1.19.2
 oauthlib==3.1.0
 opencv-python==4.4.0.44
 opt-einsum==3.3.0
@@ -109,6 +109,7 @@ Shapely==1.7.1
 six==1.15.0
 sklearn==0.0
 soupsieve==2.0.1
+split-folders==0.4.3
 # tensorboard==2.4.0
 # tensorboard-plugin-wit==1.7.0
 # tensorflow==2.3.1

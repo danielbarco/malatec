@@ -24,6 +24,9 @@ YOLOV2-Tensorflow-2.0/
 data
 Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
 Notebooks/output
+masks
+SCAN_2021-02-18_19-28-42
+
 
 # C extensions
 *.so
@@ -152,6 +155,4 @@ dmypy.json
 
 
 
-
-Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
 Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images

@@ -5,7 +5,7 @@
 # - This notebook is inspired from the great kernel [Keras U-net starter - LB 0.277](https://www.kaggle.com/keegil/keras-u-net-starter-lb-0-277) by Kjetil Åmdal-Sævik.
 
 import os, sys
-from os.path import isfile, join
+from os.path import isfile, join, basename
 import numpy as np
 import pandas as pd
 from skimage.io import imread
@@ -51,10 +51,30 @@ def get_imgs(PATH, IMG_HEIGHT = 256, IMG_WIDTH = 256, IMG_CHANNELS = 3):
         imgs[idx] = img
     return imgs, sizes_imgs    
 
+def slice_all_imgs(INPUT_DIR, OUTPUT_DIR, RESIZE_FACTOR = 1,
+                  SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
+                  ZERO_FRAC_TRESH = 0.8, OVERLAP = 0, PAD = 0, VERBOSE = False):
+    '''slices all images into smaller windows    
+    INPUT_IMG,
+    OUTPUT_DIR, 
+    RESIZE_FACTOR = 1,
+    SLICE_HEIGHT = 256, 
+    SLICE_WIDTH = 256,
+    ZERO_FRAC_TRESH = 0, 
+    OVERLAP = 0, 
+    PAD = 0, 
+    VERBOSE = False,
+    '''
+    list_paths_img = get_paths(PATH)
+    for image in list_paths_img:
+        slice_img(image, OUTPUT_DIR, RESIZE_FACTOR = 1,
+                    SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
+                    ZERO_FRAC_TRESH = 0, OVERLAP = 0, PAD = 0, VERBOSE = False)
+
+
 def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
                   SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
-                  ZERO_FRAC_TRESH = 0, OVERLAP = 0, PAD = 0, VERBOSE = False,
-                 ):
+                  ZERO_FRAC_TRESH = 0, OVERLAP = 0, PAD = 0, VERBOSE = False):
     '''
     slices image into smaller windows
     INPUT_IMG,
@@ -73,16 +93,25 @@ def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
     resized_img = cv2.resize(img, (int(round(img.shape[1] * RESIZE_FACTOR)), int(round(img.shape[0] * RESIZE_FACTOR))))
     im_h, im_w = resized_img.shape[:2]
     win_size = SLICE_HEIGHT * SLICE_WIDTH
+    filename = os.path.basename(INPUT_IMG)
+
+    try:
+        os.makedirs(OUTPUT_DIR)   
+        if VERBOSE:
+            print("Directory " , OUTPUT_DIR ,  " Created ")
+    except FileExistsError:
+        if VERBOSE:
+           print("Directory " , OUTPUT_DIR ,  " already exists")  
 
     # if slice sizes are large than image, pad the edges
     if SLICE_HEIGHT > im_h:
-        pad = SLICE_HEIGHT - im_h
+        PAD = SLICE_HEIGHT - im_h
     if SLICE_WIDTH > im_w:
-        pad = max(pad, SLICE_WIDTH - im_w)
+        PAD = max(PAD, SLICE_WIDTH - im_w)
     # pad the edge of the image with black pixels
-    if pad > 0:
+    if PAD > 0:
         border_color = (0, 0, 0)
-        resized_img = cv2.copyMakeBorder(resized_img, pad, pad, pad, pad,
+        resized_img = cv2.copyMakeBorder(resized_img, PAD, PAD, PAD, PAD,
                                    cv2.BORDER_CONSTANT, value=border_color)
 
     n_ims = 0
@@ -114,7 +143,7 @@ def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
             outname_part = 'slice_' + filename + \
             '_' + str(y0) + '_' + str(x0) + \
             '_' + str(win_h) + '_' + str(win_w) + \
-            '_' + str(pad)
+            '_' + str(PAD)
 
             # get black and white image
             window = cv2.cvtColor(window_c, cv2.COLOR_BGR2GRAY)
@@ -144,9 +173,7 @@ def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
     if VERBOSE:
         print("Num slices:", n_ims, "Num non-null slices:", n_ims_nonull,
               "sliceHeight", SLICE_HEIGHT, "sliceWidth", SLICE_WIDTH)
-        print("Time to slice", input_im, time.time()-t0, "seconds")
 
-    return dict_yolo, dict_bbx, max_annot
 
 def unet_predict(MODEL, IMGS, SIZES_IMGS):
     ''' returns a unet predicted masks

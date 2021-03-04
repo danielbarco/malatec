@@ -10,6 +10,7 @@ data-science-bowl-2018
 NIH-NLM-ThinBloodSmearsPf
 *.csv
 *.pkl
+*.pickle
 .vscode
 cropped
 masks

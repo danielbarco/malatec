@@ -26,6 +26,22 @@ YOLO v2 running on Tensorflow 2 from here
 
 https://github.com/jmpap/YOLOV2-Tensorflow-2.0
 
+Folder Structure looks something like this
+
+.
+├── ...
+|── Notebooks
+|── src
+├── data                    # all data
+│   ├── cell_images         # images of cut out cells
+│   ├── weights             # tensorflow weights
+│   |── stacking            # stacked images
+│   ├── pickled             # pickled dataframes and dictionaries
+│   ├── masks               # maskes of unet output
+│   └── cropped             # cropped and downscaled images 0.3 of original
+└── ...
+
+
 
 
 

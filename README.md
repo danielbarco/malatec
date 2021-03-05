@@ -20,7 +20,7 @@ docker build -t container_malatec .
 ```
 Replace PATH with the path to the malatec container and run the following
 ```bash
-docker run -it --runtime=nvidia --rm --name tf_malatec -v {PATH}/malatec:/tf -p 8888:8888/tcp -p 6006:6006/tcp container_malatec:latest
+docker run -it --runtime=nvidia --memory 15g --oom-kill-disable --rm --name tf_malatec -v {PATH}/malatec:/tf -p 8888:8888/tcp -p 6006:6006/tcp container_malatec:latest 
 ```
 YOLO v2 running on Tensorflow 2 from here
 

@@ -11,6 +11,9 @@ NIH-NLM-ThinBloodSmearsPf
 *.csv
 *.pkl
 *.pickle
+*.pb
+*.h5
+*.tflite
 .vscode
 cropped
 masks
@@ -24,9 +27,12 @@ YOLOV2-Tensorflow-2
 YOLOV2-Tensorflow-2.0/
 data
 Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
+Chrome_Webdriver
 Notebooks/output
 masks
 stacking
+focus-stacking
+keras_squeezenet2
 
 
 # C extensions
@@ -153,7 +159,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-
-
-Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images

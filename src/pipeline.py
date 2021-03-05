@@ -15,10 +15,10 @@ import tensorflow as tf
 import cv2
 
 
-def get_paths(PATH):
+def get_paths(img_path):
     '''Get paths of images png, jpg or jpeg'''
     list_paths_img = []
-    for root, dirs, files in os.walk(PATH):
+    for root, dirs, files in os.walk(img_path):
         for file in files:
             filename, file_extension = os.path.splitext(file)
             if isfile(join(root, file)) and file_extension in [".png",'.jpg','.jpeg'] and not filename.startswith("._"):
@@ -26,99 +26,99 @@ def get_paths(PATH):
     return list_paths_img
 
 
-def get_imgs(PATH, IMG_HEIGHT = 256, IMG_WIDTH = 256, IMG_CHANNELS = 3):
+def get_imgs(img_path, img_height = 256, img_width = 256, img_channels = 3):
     '''get images and resizes them
-    PATH = folder holding images
-    IMG_HEIGHT = 256 (default)
-    IMG_WIDTH = 256 (default) 
-    IMG_CHANNELS = 3 (default)
+    img_path = folder holding images
+    img_height = 256 (default)
+    img_width = 256 (default) 
+    img_channels = 3 (default)
     '''
-    list_paths_img = get_paths(PATH)
-    imgs = np.zeros((len(list_paths_img), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS), dtype=np.uint8)
+    list_paths_img = get_paths(img_path)
+    imgs = np.zeros((len(list_paths_img), img_height, img_width, img_channels), dtype=np.uint8)
     # Get and resize images
-    imgs = np.zeros((len(list_paths_img), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS), dtype=np.uint8)
+    imgs = np.zeros((len(list_paths_img), img_height, img_width, img_channels), dtype=np.uint8)
     sizes_imgs = []
     for idx, image_path in enumerate(list_paths_img):
         #Read images iteratively
-        img = imread(image_path)[:,:,:IMG_CHANNELS]
+        img = imread(image_path)[:,:,:img_channels]
         #Get test size
         sizes_imgs.append([img.shape[0], img.shape[1]])
         
         #Resize image to match training data
-        img = resize(img, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
+        img = resize(img, (img_height, img_width), mode='constant', preserve_range=True)
         
         #Append image to numpy array for test dataset
         imgs[idx] = img
     return imgs, sizes_imgs    
 
-def slice_all_imgs(INPUT_DIR, OUTPUT_DIR, RESIZE_FACTOR = 1,
-                  SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
-                  ZERO_FRAC_TRESH = 0.8, OVERLAP = 0, PAD = 0, VERBOSE = False):
+def slice_all_imgs(input_dir, output_dir, resize_factor = 1,
+                  slice_height = 256, slice_width = 256,
+                  zero_frac_tresh = 0.8, overlap = 0, pad = 0, verbose = False):
     '''slices all images into smaller windows    
-    INPUT_IMG,
-    OUTPUT_DIR, 
-    RESIZE_FACTOR = 1,
-    SLICE_HEIGHT = 256, 
-    SLICE_WIDTH = 256,
-    ZERO_FRAC_TRESH = 0, 
-    OVERLAP = 0, 
-    PAD = 0, 
-    VERBOSE = False,
+    input_img,
+    output_dir, 
+    resize_factor = 1,
+    slice_height = 256, 
+    slice_width = 256,
+    zero_frac_tresh = 0, 
+    overlap = 0, 
+    pad = 0, 
+    verbose = False,
     '''
     list_paths_img = get_paths(PATH)
     for image in list_paths_img:
-        slice_img(image, OUTPUT_DIR, RESIZE_FACTOR = 1,
-                    SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
-                    ZERO_FRAC_TRESH = 0, OVERLAP = 0, PAD = 0, VERBOSE = False)
+        slice_img(image, output_dir, resize_factor = 1,
+                    slice_height = 256, slice_width = 256,
+                    zero_frac_tresh = 0, overlap = 0, pad = 0, verbose = False)
 
 
-def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
-                  SLICE_HEIGHT = 256, SLICE_WIDTH = 256,
-                  ZERO_FRAC_TRESH = 0, OVERLAP = 0, PAD = 0, VERBOSE = False):
+def slice_img(input_img, output_dir, resize_factor = 1,
+                  slice_height = 256, slice_width = 256,
+                  zero_frac_tresh = 0, overlap = 0, pad = 0, verbose = False):
     '''
     slices image into smaller windows
-    INPUT_IMG,
-    OUTPUT_DIR, 
-    RESIZE_FACTOR = 1,
-    SLICE_HEIGHT = 256, 
-    SLICE_WIDTH = 256,
-    ZERO_FRAC_TRESH = 0, 
-    OVERLAP = 0, 
-    PAD = 0, 
-    VERBOSE = False,
+    input_img,
+    output_dir, 
+    resize_factor = 1,
+    slice_height = 256, 
+    slice_width = 256,
+    zero_frac_tresh = 0, 
+    overlap = 0, 
+    pad = 0, 
+    verbose = False,
     '''
     #adapted from https://github.com/CosmiQ/simrdwn/blob/9f91eac5d0769400f89eefc145d67f0ee209d8fc/simrdwn/core/slice_im.py
 
-    img = cv2.imread(INPUT_IMG, 1)  # color
-    resized_img = cv2.resize(img, (int(round(img.shape[1] * RESIZE_FACTOR)), int(round(img.shape[0] * RESIZE_FACTOR))))
+    img = cv2.imread(input_img, 1)  # color
+    resized_img = cv2.resize(img, (int(round(img.shape[1] * resize_factor)), int(round(img.shape[0] * resize_factor))))
     im_h, im_w = resized_img.shape[:2]
-    win_size = SLICE_HEIGHT * SLICE_WIDTH
-    filename = os.path.basename(INPUT_IMG)
+    win_size = slice_height * slice_width
+    filename = os.path.basename(input_img)
 
     try:
-        os.makedirs(OUTPUT_DIR)   
-        if VERBOSE:
-            print("Directory " , OUTPUT_DIR ,  " Created ")
+        os.makedirs(output_dir)   
+        if verbose:
+            print("Directory " , output_dir ,  " Created ")
     except FileExistsError:
-        if VERBOSE:
-           print("Directory " , OUTPUT_DIR ,  " already exists")  
+        if verbose:
+           print("Directory " , output_dir ,  " already exists")  
 
     # if slice sizes are large than image, pad the edges
-    if SLICE_HEIGHT > im_h:
-        PAD = SLICE_HEIGHT - im_h
-    if SLICE_WIDTH > im_w:
-        PAD = max(PAD, SLICE_WIDTH - im_w)
+    if slice_height > im_h:
+        pad = slice_height - im_h
+    if slice_width > im_w:
+        pad = max(pad, slice_width - im_w)
     # pad the edge of the image with black pixels
-    if PAD > 0:
+    if pad > 0:
         border_color = (0, 0, 0)
-        resized_img = cv2.copyMakeBorder(resized_img, PAD, PAD, PAD, PAD,
+        resized_img = cv2.copyMakeBorder(resized_img, pad, pad, pad, pad,
                                    cv2.BORDER_CONSTANT, value=border_color)
 
     n_ims = 0
     n_ims_nonull = 0
-    dx = int((1. - OVERLAP) * SLICE_WIDTH)
-    dy = int((1. - OVERLAP) * SLICE_HEIGHT)
-    if VERBOSE:
+    dx = int((1. - overlap) * slice_width)
+    dy = int((1. - overlap) * slice_height)
+    if verbose:
         print('dx', dx)
         print('dy', dy)
 
@@ -128,22 +128,22 @@ def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
             n_ims += 1
             # extract image
             # make sure we don't go past the edge of the image
-            if y + SLICE_HEIGHT > im_h:
-                y0 = im_h - SLICE_HEIGHT
+            if y + slice_height > im_h:
+                y0 = im_h - slice_height
             else:
                 y0 = y
-            if x + SLICE_WIDTH > im_w:
-                x0 = im_w - SLICE_WIDTH
+            if x + slice_width > im_w:
+                x0 = im_w - slice_width
             else:
                 x0 = x
 
-            window_c = resized_img[y0:y0 + SLICE_WIDTH, x0:x0 + SLICE_WIDTH]
+            window_c = resized_img[y0:y0 + slice_width, x0:x0 + slice_width]
             win_h, win_w = window_c.shape[:2]
     
             outname_part = 'slice_' + filename + \
             '_' + str(y0) + '_' + str(x0) + \
             '_' + str(win_h) + '_' + str(win_w) + \
-            '_' + str(PAD)
+            '_' + str(pad)
 
             # get black and white image
             window = cv2.cvtColor(window_c, cv2.COLOR_BGR2GRAY)
@@ -156,42 +156,131 @@ def slice_img(INPUT_IMG, OUTPUT_DIR, RESIZE_FACTOR = 1,
             zero_frac = float(zero_counts) / win_size
             # print ("zero_frac", zero_fra
             # skip if image is mostly empty
-            if zero_frac >= ZERO_FRAC_TRESH:
-                if VERBOSE:
+            if zero_frac >= zero_frac_tresh:
+                if verbose:
                     print("Zero frac too high at:", zero_frac)
                 continue
                 
             #  save
-            outname_im = os.path.join(OUTPUT_DIR, outname_part + '.png')
+            outname_im = os.path.join(output_dir, outname_part + '.png')
          
             # save yolt ims
-            if VERBOSE:
+            if verbose:
                 print("image output:", outname_im)
             cv2.imwrite(outname_im, window_c)
 
 
-    if VERBOSE:
+    if verbose:
         print("Num slices:", n_ims, "Num non-null slices:", n_ims_nonull,
-              "sliceHeight", SLICE_HEIGHT, "sliceWidth", SLICE_WIDTH)
+              "sliceHeight", slice_height, "sliceWidth", slice_width)
 
 
-def unet_predict(MODEL, IMGS, SIZES_IMGS):
+def unet_predict(unet_model, imgs, sizes_imgs):
     ''' returns a unet predicted masks
-    MODEL = tensorflow2 model checkpoint .h5
-    IMGS = a numpy list list of images
-    SIZES_IMGS = a list with all image sizes'''
+    unet_model = tensorflow2 model checkpoint .h5
+    imgs = a numpy list list of images
+    sizes_imgs = a list with all image sizes'''
 
     # Predict 
-    model = load_model(MODEL)
-    pred_masks = model.predict(IMGS, verbose=1)
+    unet_model = load_model(unet_model)
+    pred_masks = unet_model.predict(imgs, verbose=1)
 
     # Threshold predictions (if prediction larger than 0.5 indicates cell)
     pred_masks_t = (pred_masks > 0.5).astype(np.uint8)
 
-    # # Create list of upsampled test masks
-    # preds_test_upsampled = []
-    # for i in range(len(pred_masks_t)):
-    #     preds_test_upsampled.append(resize(np.squeeze(pred_masks_t[i]), 
-    #                                     (SIZES_IMGS[i][0], SIZES_IMGS[i][1]), 
-    #                                     mode='constant', preserve_range=True))
     return pred_masks_t
+
+
+
+def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False):
+    '''
+    Display predictions from YOLO model.
+
+    Parameters
+    ----------
+    - file : string list : list of images path.
+    - yolo_model : YOLO model.
+    - score_threshold : threshold used for filtering predicted bounding boxes.
+    - iou_threshold : threshold used for non max suppression.
+    '''
+    # load image
+    
+    input_image = image[:,:,::-1]
+    input_image = image / 255.
+    input_image = np.expand_dims(input_image, 0)
+
+    # prediction
+    yolo_model = load_model(yolo_model)
+    y_pred = yolo_model.predict_on_batch(input_image)
+
+    # post prediction process
+    # grid coords tensor
+    coord_x = tf.cast(tf.reshape(tf.tile(tf.range(GRID_W), [GRID_H]), (1, GRID_H, GRID_W, 1, 1)), tf.float32)
+    coord_y = tf.transpose(coord_x, (0,2,1,3,4))
+    coords = tf.tile(tf.concat([coord_x,coord_y], -1), [TRAIN_BATCH_SIZE, 1, 1, 5, 1])
+    dims = K.cast_to_floatx(K.int_shape(y_pred)[1:3])
+    dims = K.reshape(dims,(1,1,1,1,2))
+    # anchors tensor
+    anchors = np.array(ANCHORS)
+    anchors = anchors.reshape(len(anchors) // 2, 2)
+    # pred_xy and pred_wh shape (m, GRID_W, GRID_H, Anchors, 2)
+    pred_xy = K.sigmoid(y_pred[:,:,:,:,0:2])
+    pred_xy = (pred_xy + coords)
+    pred_xy = pred_xy / dims
+    pred_wh = K.exp(y_pred[:,:,:,:,2:4])
+    pred_wh = (pred_wh * anchors)
+    pred_wh = pred_wh / dims
+    # pred_confidence
+    box_conf = K.sigmoid(y_pred[:,:,:,:,4:5])  
+    # pred_class
+    box_class_prob = K.softmax(y_pred[:,:,:,:,5:])
+
+    # Reshape
+    pred_xy = pred_xy[0,...]
+    pred_wh = pred_wh[0,...]
+    box_conf = box_conf[0,...]
+    box_class_prob = box_class_prob[0,...]
+
+    # Convert box coords from x,y,w,h to x1,y1,x2,y2
+    box_xy1 = pred_xy - 0.5 * pred_wh
+    box_xy2 = pred_xy + 0.5 * pred_wh
+    boxes = K.concatenate((box_xy1, box_xy2), axis=-1)
+
+    # Filter boxes
+    box_scores = box_conf * box_class_prob
+    box_classes = K.argmax(box_scores, axis=-1) # best score index
+    box_class_scores = K.max(box_scores, axis=-1) # best score
+    prediction_mask = box_class_scores >= score_threshold
+    boxes = tf.boolean_mask(boxes, prediction_mask)
+    scores = tf.boolean_mask(box_class_scores, prediction_mask)
+    classes = tf.boolean_mask(box_classes, prediction_mask)
+
+    # Scale box to image shape
+    boxes = boxes * IMAGE_H
+
+    # Non Max Supression
+    selected_idx = tf.image.non_max_suppression(boxes, scores, 50, iou_threshold=iou_threshold)
+    boxes = K.gather(boxes, selected_idx)
+    scores = K.gather(scores, selected_idx)
+    classes = K.gather(classes, selected_idx)
+    
+    if plot:
+        # Draw image
+        plt.figure(figsize=(2,2))
+        f, (ax1) = plt.subplots(1,1, figsize=(10, 10))
+        ax1.imshow(image[:,:,::-1])
+        count_detected = boxes.shape[0]
+        ax1.set_title('Detected objects count : {}'.format(count_detected))
+        for i in range(count_detected):
+            box = boxes[i,...]
+            x = box[0]
+            y = box[1]
+            w = box[2] - box[0]
+            h = box[3] - box[1]
+            classe = classes[i].numpy()
+            if classe == 0:
+                color = (0, 1, 0)
+            else:
+                color = (1, 0, 0)
+            rect = patches.Rectangle((x.numpy(), y.numpy()), w.numpy(), h.numpy(), linewidth = 3, edgecolor=color,facecolor='none')
+            ax1.add_patch(rect)

@@ -36,19 +36,20 @@ https://www.kaggle.com/advaitsave/tensorflow-2-nuclei-segmentation-unet
 
 Folder Structure looks something like this
 
+```bash
 .
-├── ...
-|── Notebooks
-|── src
+├── ... 
+├── Notebooks
+├── src
 ├── data                    # all data
 │   ├── cell_images         # images of cut out cells
 │   ├── weights             # tensorflow weights
-│   |── stacking            # stacked images
+│   ├── stacking            # stacked images
 │   ├── pickled             # pickled dataframes and dictionaries
 │   ├── masks               # maskes of unet output
 │   └── cropped             # cropped and downscaled images 0.3 of original
 └── ...
-
+```
 
 
 

@@ -1,7 +1,7 @@
 # Malatec
 Faster, better and cheaper mobile malaria detection
 
-To start the Docker container first install Docker. 
+To run the Notebooks, start the Docker container first install Docker. 
 
 https://www.tensorflow.org/install/docker?hl=uk \
 https://hub.docker.com/r/tensorflow/tensorflow/
@@ -26,6 +26,14 @@ YOLO v2 running on Tensorflow 2 from here
 
 https://github.com/jmpap/YOLOV2-Tensorflow-2.0
 
+Malaria Detection Models (ensemble) from NIH
+
+https://github.com/sivaramakrishnan-rajaraman/Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
+
+Unet from
+
+https://www.kaggle.com/advaitsave/tensorflow-2-nuclei-segmentation-unet
+
 Folder Structure looks something like this
 
 .
@@ -40,6 +48,8 @@ Folder Structure looks something like this
 │   ├── masks               # maskes of unet output
 │   └── cropped             # cropped and downscaled images 0.3 of original
 └── ...
+
+
 
 
 

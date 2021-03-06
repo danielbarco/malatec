@@ -13,7 +13,7 @@ from skimage.transform import resize
 from tensorflow.keras.models import Model, load_model
 import tensorflow as tf
 import cv2
-
+from src import yolo2_tf
 
 def get_paths(img_path):
     '''Get paths of images png, jpg or jpeg'''

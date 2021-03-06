@@ -12,8 +12,45 @@ from skimage.io import imread
 from skimage.transform import resize
 from tensorflow.keras.models import Model, load_model
 import tensorflow as tf
-import cv2
-from src import yolo2_tf
+from tensorflow import keras
+import tensorflow.keras.backend as K
+from tensorflow.keras.layers import Concatenate, concatenate, Dropout, LeakyReLU, Reshape, Activation, Conv2D, Input, MaxPooling2D, BatchNormalization, Flatten, Dense, Lambda
+import cv2  
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+# Custom Keras layer
+
+class SpaceToDepth(keras.layers.Layer):
+
+    def __init__(self, block_size, **kwargs):
+        self.block_size = block_size
+        super(SpaceToDepth, self).__init__(**kwargs)
+
+    def call(self, inputs):
+        x = inputs
+        batch, height, width, depth = K.int_shape(x)
+        batch = -1
+        reduced_height = height // self.block_size
+        reduced_width = width // self.block_size
+        y = K.reshape(x, (batch, reduced_height, self.block_size,
+                             reduced_width, self.block_size, depth))
+        z = K.permute_dimensions(y, (0, 1, 3, 2, 4, 5))
+        t = K.reshape(z, (batch, reduced_height, reduced_width, depth * self.block_size **2))
+        return t
+
+    def compute_output_shape(self, input_shape):
+        shape =  (input_shape[0], input_shape[1] // self.block_size, input_shape[2] // self.block_size,
+                  input_shape[3] * self.block_size **2)
+        return tf.TensorShape(shape)
+        
+    def get_config(self):
+
+        config = super().get_config().copy()
+        config.update({
+            'block_size': self.block_size,
+        })
+        return config
 
 def get_paths(img_path):
     '''Get paths of images png, jpg or jpeg'''
@@ -192,7 +229,9 @@ def unet_predict(unet_model, imgs, sizes_imgs):
 
 
 
-def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False):
+def display_yolo(image, yolo_model, score_threshold, iou_threshold,\
+                 train_batch_size =16, grid_h =8, grid_w =8, image_h =256, image_w =256, anchors =[0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828],\
+                 plot = False):
     '''
     Display predictions from YOLO model.
 
@@ -203,6 +242,7 @@ def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False
     - score_threshold : threshold used for filtering predicted bounding boxes.
     - iou_threshold : threshold used for non max suppression.
     '''
+
     # load image
     
     input_image = image[:,:,::-1]
@@ -210,20 +250,19 @@ def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False
     input_image = np.expand_dims(input_image, 0)
 
     # prediction
-    yolo_model = load_model(yolo_model)
     y_pred = yolo_model.predict_on_batch(input_image)
 
     # post prediction process
     # grid coords tensor
-    coord_x = tf.cast(tf.reshape(tf.tile(tf.range(GRID_W), [GRID_H]), (1, GRID_H, GRID_W, 1, 1)), tf.float32)
+    coord_x = tf.cast(tf.reshape(tf.tile(tf.range(grid_w), [grid_h]), (1, grid_h, grid_w, 1, 1)), tf.float32)
     coord_y = tf.transpose(coord_x, (0,2,1,3,4))
-    coords = tf.tile(tf.concat([coord_x,coord_y], -1), [TRAIN_BATCH_SIZE, 1, 1, 5, 1])
+    coords = tf.tile(tf.concat([coord_x,coord_y], -1), [train_batch_size, 1, 1, 5, 1])
     dims = K.cast_to_floatx(K.int_shape(y_pred)[1:3])
     dims = K.reshape(dims,(1,1,1,1,2))
     # anchors tensor
-    anchors = np.array(ANCHORS)
+    anchors = np.array(anchors)
     anchors = anchors.reshape(len(anchors) // 2, 2)
-    # pred_xy and pred_wh shape (m, GRID_W, GRID_H, Anchors, 2)
+    # pred_xy and pred_wh shape (m, grid_w, grid_h, Anchors, 2)
     pred_xy = K.sigmoid(y_pred[:,:,:,:,0:2])
     pred_xy = (pred_xy + coords)
     pred_xy = pred_xy / dims
@@ -256,7 +295,7 @@ def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False
     classes = tf.boolean_mask(box_classes, prediction_mask)
 
     # Scale box to image shape
-    boxes = boxes * IMAGE_H
+    boxes = boxes * image_h
 
     # Non Max Supression
     selected_idx = tf.image.non_max_suppression(boxes, scores, 50, iou_threshold=iou_threshold)
@@ -284,3 +323,5 @@ def display_yolo(image, yolo_model, score_threshold, iou_threshold, plot = False
                 color = (1, 0, 0)
             rect = patches.Rectangle((x.numpy(), y.numpy()), w.numpy(), h.numpy(), linewidth = 3, edgecolor=color,facecolor='none')
             ax1.add_patch(rect)
+            
+    return boxes, scores, classes

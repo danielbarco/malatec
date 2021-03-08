@@ -73,16 +73,16 @@ def get_imgs(img_path, img_height = 256, img_width = 256, img_channels = 3):
     list_paths_img = get_paths(img_path)
     imgs = np.zeros((len(list_paths_img), img_height, img_width, img_channels), dtype=np.uint8)
     # Get and resize images
-    imgs = np.zeros((len(list_paths_img), img_height, img_width, img_channels), dtype=np.uint8)
     sizes_imgs = []
     for idx, image_path in enumerate(list_paths_img):
         #Read images iteratively
         img = imread(image_path)[:,:,:img_channels]
-        #Get test size
-        sizes_imgs.append([img.shape[0], img.shape[1]])
-        
+
         #Resize image to match training data
         img = resize(img, (img_height, img_width), mode='constant', preserve_range=True)
+        
+        #Get test size
+        sizes_imgs.append([img.shape[0], img.shape[1]])
         
         #Append image to numpy array for test dataset
         imgs[idx] = img
@@ -104,9 +104,9 @@ def slice_all_imgs(input_dir, output_dir, resize_factor = 1,
     '''
     list_paths_img = get_paths(PATH)
     for image in list_paths_img:
-        slice_img(image, output_dir, resize_factor = 1,
-                    slice_height = 256, slice_width = 256,
-                    zero_frac_tresh = 0, overlap = 0, pad = 0, verbose = False)
+        slice_img(image, output_dir, resize_factor = resize_factor,
+                    slice_height = slice_height, slice_width = slice_width,
+                    zero_frac_tresh = zero_frac_tresh, overlap = overlap, pad = pad, verbose = verbose)
 
 
 def slice_img(input_img, output_dir, resize_factor = 1,

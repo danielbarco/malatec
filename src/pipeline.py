@@ -72,8 +72,9 @@ def get_imgs(img_path, img_height = 256, img_width = 256, img_channels = 3):
     '''
     list_paths_img = get_paths(img_path)
     imgs = np.zeros((len(list_paths_img), img_height, img_width, img_channels), dtype=np.uint8)
+    sizes_imgs = len(list_paths_img) * [0] 
+    paths_imgs = len(list_paths_img) * [0] 
     # Get and resize images
-    sizes_imgs = []
     for idx, image_path in enumerate(list_paths_img):
         #Read images iteratively
         img = imread(image_path)[:,:,:img_channels]
@@ -81,12 +82,11 @@ def get_imgs(img_path, img_height = 256, img_width = 256, img_channels = 3):
         #Resize image to match training data
         img = resize(img, (img_height, img_width), mode='constant', preserve_range=True)
         
-        #Get test size
-        sizes_imgs.append([img.shape[0], img.shape[1]])
-        
-        #Append image to numpy array for test dataset
+        # Store data at same index
+        sizes_imgs[idx] = [img.shape[0], img.shape[1]]
+        paths_imgs[idx] = image_path
         imgs[idx] = img
-    return imgs, sizes_imgs    
+    return imgs, sizes_imgs, paths_imgs
 
 def slice_all_imgs(input_dir, output_dir, resize_factor = 1,
                   slice_height = 256, slice_width = 256,
@@ -212,11 +212,11 @@ def slice_img(input_img, output_dir, resize_factor = 1,
               "sliceHeight", slice_height, "sliceWidth", slice_width)
 
 
-def unet_predict(unet_model, imgs, sizes_imgs):
+def unet_predict(unet_model, imgs):
     ''' returns a unet predicted masks
     unet_model = tensorflow2 model checkpoint .h5
     imgs = a numpy list list of images
-    sizes_imgs = a list with all image sizes'''
+    '''
 
     # Predict 
     unet_model = load_model(unet_model)
@@ -325,3 +325,4 @@ def display_yolo(image, yolo_model, score_threshold, iou_threshold,\
             ax1.add_patch(rect)
             
     return boxes, scores, classes
+

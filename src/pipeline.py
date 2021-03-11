@@ -199,7 +199,7 @@ def slice_img(input_img, output_dir, resize_factor = 1,
                 continue
                 
             #  save
-            outname_im = os.path.join(output_dir, outname_part + '.png')
+            outname_im = os.path.join(output_dir, outname_part + '.jpeg')
          
             # save yolt ims
             if verbose:

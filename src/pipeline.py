@@ -204,7 +204,7 @@ def slice_img(input_img, output_dir, resize_factor = 1,
             # save yolt ims
             if verbose:
                 print("image output:", outname_im)
-            cv2.imwrite(outname_im, window_c)
+            cv2.imwrite(outname_im, window_c, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
 
     if verbose:

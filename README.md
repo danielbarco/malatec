@@ -1,6 +1,10 @@
 # Malatec
 Faster, better and cheaper mobile malaria detection
 
+![Unet segmentation, yolo detection, mixed models for classification](./Notebooks/images/Malatec.png 'Unet segmentation, yolo detection, mixed models for classification')  
+
+*The image shows the cut sample image taken with a 3D printed openflexure microscope, segmented with a unet, Yolo2 red blood cell detection, and then final classification using a combination of a VGG19 and a SqueezeNet*
+
 To run the Notebooks, start the Docker container first install Docker. 
 
 https://www.tensorflow.org/install/docker?hl=uk \

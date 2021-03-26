@@ -5,7 +5,7 @@ Faster, better and cheaper mobile malaria detection
 
 *The image shows the cut sample image taken with a 3D printed openflexure microscope, segmented with a unet, Yolo2 red blood cell detection, and then final classification using a combination of a VGG19 and a SqueezeNet*
 
-To run the Notebooks, start the Docker container first install Docker. 
+To run the Notebooks, we will first install Docker. 
 
 https://www.tensorflow.org/install/docker?hl=uk \
 https://hub.docker.com/r/tensorflow/tensorflow/
@@ -17,15 +17,19 @@ docker pull tensorflow/tensorflow
 docker pull tensorflow/tensorflow:latest-gpu-jupyter
 ```
 
-Then run the following in the folder were you have the Dockerfile:
+Then run the following in the folder were you have the Dockerfile to build the docker file:
 
 ```bash
 docker build -t container_malatec .
 ```
-Replace PATH with the path to the malatec container and run the following
+Replace PATH with the path to the malatec container and run the following to start up the docker container
 ```bash
 docker run -it --runtime=nvidia --memory="12g" --memory-swap=-1 --oom-kill-disable --rm --name tf_malatec -v /home/fight/Documents/malatec:/tf -p 8888:8888/tcp -p 6006:6006/tcp container_malatec:latest 
 ```
+Now you can open the jupyter notebook (link in the terminal) and navigate to the notebook you would like to work on.
+
+____________________________________________________
+
 YOLO v2 running on Tensorflow 2 from here
 
 https://github.com/jmpap/YOLOV2-Tensorflow-2.0
@@ -37,6 +41,14 @@ https://github.com/sivaramakrishnan-rajaraman/Deep-Neural-Ensembles-toward-Malar
 Unet from
 
 https://www.kaggle.com/advaitsave/tensorflow-2-nuclei-segmentation-unet
+
+____________________________________________________
+
+Cell images from: https://lhncbc.nlm.nih.gov/LHC-downloads/downloads.html#malaria-datasets
+
+Microscope images with polygon bounding boxes from: ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/NIH-NLM-ThinBloodSmearsPf/
+
+____________________________________________________
 
 Folder Structure looks something like this
 

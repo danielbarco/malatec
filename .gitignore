@@ -8,6 +8,7 @@ venv_notebooks
 venv_testing
 data-science-bowl-2018
 NIH-NLM-ThinBloodSmearsPf
+poly-yolo
 *.csv
 *.pkl
 *.pickle

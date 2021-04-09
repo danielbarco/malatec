@@ -468,7 +468,7 @@ def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
     dx = K.square(anchors_tensor[..., 0:1] / 2)
     dy = K.square(anchors_tensor[..., 1:2] / 2)
     d = K.cast(K.sqrt(dx + dy), K.dtype(polygons_x))
-    a = K.pow(input_shape[::-1], 2)
+    a = K.pow(input_shape[...,::-1], 2)
     a = K.cast(a, K.dtype(feats))
     b= K.sum(a)
     diagonal =  K.cast(K.sqrt(b), K.dtype(feats))
@@ -602,8 +602,8 @@ def preprocess_true_boxes(true_boxes, input_shape, anchors, num_classes):
     boxes_wh = true_boxes[..., 2:4] - true_boxes[..., 0:2]
 
     true_boxes[:,:, 5:NUM_ANGLES3 + 5:3] /= np.clip(np.expand_dims(np.sqrt(np.power(boxes_wh[:, :, 0], 2) + np.power(boxes_wh[:, :, 1], 2)), -1), 0.0001, 9999999)
-    true_boxes[..., 0:2] = boxes_xy / input_shape[::-1]
-    true_boxes[..., 2:4] = boxes_wh / input_shape[::-1]
+    true_boxes[..., 0:2] = boxes_xy / input_shape[...,::-1]
+    true_boxes[..., 2:4] = boxes_wh / input_shape[...,::-1]
 
     m = true_boxes.shape[0]
     grid_shapes = [input_shape // {0: grid_size_multiplier}[l] for l in range(1)]
@@ -759,10 +759,10 @@ def yolo_loss(args, anchors, num_classes, ignore_thresh=.5):
 
         grid, raw_pred, pred_xy, pred_wh, pol_cnf = yolo_head(yolo_outputs[layer], anchors[anchor_mask[layer]], num_classes, input_shape, calc_loss=True)
         pred_box = K.concatenate([pred_xy, pred_wh])
-        raw_true_xy = y_true[layer][..., :2] * grid_shapes[layer][::-1] - grid
+        raw_true_xy = y_true[layer][..., :2] * grid_shapes[layer][...,::-1] - grid
         raw_true_polygon0 = y_true[layer][..., 5 + num_classes: 5 + num_classes + NUM_ANGLES3]
 
-        raw_true_wh = K.log(y_true[layer][..., 2:4] / anchors[anchor_mask[layer]] * input_shape[::-1])
+        raw_true_wh = K.log(y_true[layer][..., 2:4] / anchors[anchor_mask[layer]] * input_shape[...,::-1])
         raw_true_wh = K.switch(object_mask, raw_true_wh, K.zeros_like(raw_true_wh))  # avoid log(0)=-inf
 
         raw_true_polygon_x = raw_true_polygon0[..., ::3]
@@ -772,7 +772,7 @@ def yolo_loss(args, anchors, num_classes, ignore_thresh=.5):
         dy = K.square(anchors[anchor_mask[layer]][..., 1:2] / 2)
         d = K.cast(K.sqrt(dx + dy), K.dtype(raw_true_polygon_x))
 
-        diagonal = K.sqrt(K.pow(input_shape[::-1][0], 2) + K.pow(input_shape[::-1][1], 2))
+        diagonal = K.sqrt(K.pow(input_shape[...,::-1][0], 2) + K.pow(input_shape[...,::-1][1], 2))
         raw_true_polygon_x = K.log(raw_true_polygon_x / d * diagonal)
         raw_true_polygon_x = K.switch(vertices_mask, raw_true_polygon_x, K.zeros_like(raw_true_polygon_x))
         box_loss_scale = 2 - y_true[layer][..., 2:3] * y_true[layer][..., 3:4]

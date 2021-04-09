@@ -22,9 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath('.'))) # to make imports rela
 import math
 import random as rd
 import cv2 as cv
-import tensorflow.keras.backend as K
+#import tensorflow.keras.backend as K
 import numpy as np
-import tensorflow as tf
 from PIL import Image
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, Callback
 from tensorflow.keras.layers import Conv2D, Add, ZeroPadding2D, UpSampling2D, Concatenate
@@ -38,6 +37,9 @@ from tensorflow.keras.optimizers import Adadelta, Adagrad
 from tensorflow.keras.regularizers import l2
 #from tensorflow.keras.utils import multi_gpu_model
 from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
+import tensorflow.compat.v1.keras.backend as K
+import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
 
 np.set_printoptions(precision=3, suppress=True)
 MAX_VERTICES = 1000 #that allows the labels to have 1000 vertices per polygon at max. They are reduced for training

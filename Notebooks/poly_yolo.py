@@ -4,6 +4,11 @@
 # - the neck and head is new, it has single output scale
 # - it is extended by the bounding polygon functionality
 
+# Nijeri: Dataset: https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/simulator_dataset
+# Anchor and Class File: https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/poly_yolo
+#         Model:  https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/poly_yolo/models (city skapes)
+
+
 from datetime import datetime
 import colorsys
 import os

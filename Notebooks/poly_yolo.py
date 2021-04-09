@@ -6,7 +6,7 @@
 
 # Nijeri: Dataset: https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/simulator_dataset
 # Anchor and Class File: https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/poly_yolo
-#         Model:  https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/poly_yolo/models (city skapes)
+#         Model:  https://gitlab.com/irafm-ai/poly-yolo/-/tree/master/poly_yolo/models (cityscapes)
 
 
 from datetime import datetime

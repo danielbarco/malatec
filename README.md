@@ -24,7 +24,7 @@ docker build -t container_malatec .
 ```
 Replace PATH with the path to the malatec container and run the following to start up the docker container
 ```bash
-docker run -it --runtime=nvidia --memory="12g" --memory-swap=-1 --oom-kill-disable --rm --name tf_malatec -v /home/fight/Documents/malatec:/tf -p 8888:8888/tcp -p 6006:6006/tcp container_malatec:latest 
+docker run -it --runtime=nvidia --memory="16g" --memory-swap=-1 --oom-kill-disable --rm --name tf_malatec -v /home/fight/Documents/malatec:/tf -p 8888:8888/tcp -p 6006:6006/tcp container_malatec:latest 
 ```
 Now you can open the jupyter notebook (link in the terminal) and navigate to the notebook you would like to work on.
 

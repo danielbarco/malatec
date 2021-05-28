@@ -1,9 +1,9 @@
 # Malatec
 Faster, better and cheaper mobile malaria detection
 
-![Unet segmentation, yolo detection, mixed models for classification](https://github.com/danielbarco/malatec/blob/main/Notebooks/Images/Malatec.png 'Unet segmentation, yolo detection, mixed models for classification')  
+![Move microscope, cellpose segmentation and ensemble model for classification using SqueezeNet + VGG19 ](Notebooks/Images/malatec_mvp2.gif 'Move microscope, cellpose segmentation and ensemble model for classification using SqueezeNet + VGG19')
 
-*The image shows the cut sample image taken with a 3D printed openflexure microscope, segmented with a unet, Yolo2 red blood cell detection, and then final classification using a combination of a VGG19 and a SqueezeNet*
+**[Checkout our app here 🎉 🔬](https://github.com/danielbarco/malatec_app)**
 
 To run the Notebooks, first install Docker. 
 
@@ -29,24 +29,18 @@ docker run -it --runtime=nvidia --memory="16g" --memory-swap=-1 --oom-kill-disab
 Now you can open the jupyter notebook (link in the terminal) and navigate to the notebook you would like to work on.
 
 ____________________________________________________
+**Pipeline**    
 
-YOLO v2 running on Tensorflow 2 from here
-
-https://github.com/jmpap/YOLOV2-Tensorflow-2.0
-
-Malaria Detection Models (ensemble) from NIH
-
-https://github.com/sivaramakrishnan-rajaraman/Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
-
-Unet from
-
-https://www.kaggle.com/advaitsave/tensorflow-2-nuclei-segmentation-unet
-
+- Cell segmentation from microscope images using [Article](https://www.biorxiv.org/content/10.1101/2020.02.02.931238v1) | [GitHub](https://github.com/MouseLand/cellpose)  
+- Classification: SqueezeNet + VGG19 [Article](https://peerj.com/articles/6977.pdf) | [GitHub](https://github.com/sivaramakrishnan-rajaraman/Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images)
 ____________________________________________________
+**Data**
 
-Cell images from: https://lhncbc.nlm.nih.gov/LHC-downloads/downloads.html#malaria-datasets
+- Cell images from: https://lhncbc.nlm.nih.gov/LHC-downloads/downloads.html#malaria-datasets
 
-Microscope images with polygon bounding boxes from: ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/NIH-NLM-ThinBloodSmearsPf/
+- Microscope images with polygon bounding boxes from: ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/NIH-NLM-ThinBloodSmearsPf/
+
+**[Publicly Available Malria Datasets](https://github.com/danielbarco/malaria_datasets)**
 
 ____________________________________________________
 
@@ -66,6 +60,7 @@ Folder Structure looks something like this
 │   └── cropped             # cropped and downscaled images 0.3 of original
 └── ...
 ```
+Made with ❤️ in Switzerland ⛰️
 
 
 

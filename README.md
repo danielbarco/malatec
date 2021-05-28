@@ -40,6 +40,8 @@ ____________________________________________________
 
 - Microscope images with polygon bounding boxes from: ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/NIH-NLM-ThinBloodSmearsPf/
 
+- Thick blood smear images from: ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/Thick_Smears_150
+
 **[Publicly Available Malria Datasets](https://github.com/danielbarco/malaria_datasets)**
 
 ____________________________________________________

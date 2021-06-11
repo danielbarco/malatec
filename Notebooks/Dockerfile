@@ -16,6 +16,16 @@ RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 EXPOSE 6006
 EXPOSE 8888
+
+#Object detection package tf
+RUN git clone --depth 1 https://github.com/tensorflow/models
+# intall protoc
+RUN apt install -y protobuf-compiler
+WORKDIR /models/research/
+# RUN protoc --version
+RUN protoc object_detection/protos/*.proto --python_out=.
+RUN cp object_detection/packages/tf2/setup.py .
+RUN python -m pip install .
 # RUN tensorboard --logdir logs
 # RUN apt-get install -y libgl1-mesa-glxs
 # RUN git clone https://github.com/daviddexter/keras_squeezenet2

@@ -31,6 +31,7 @@ Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Imag
 Chrome_Webdriver
 malaria-detection-classification
 Notebooks/output
+Notebooks/models
 masks
 stacking
 focus-stacking
@@ -168,3 +169,4 @@ dmypy.json
 
 
 Deep-Neural-Ensembles-toward-Malaria-Parasite-Detection-in-Thin-Blood-Smear-Images
+

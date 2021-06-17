@@ -26,6 +26,7 @@ COPY models/research/object_detection/packages/tf2/setup.py .
 # code fails if we do not install the following avro-python3
 RUN pip install avro-python3==1.9.2.1
 RUN python setup.py install
+RUN pip install wget
 
 
 # RUN tensorboard --logdir logs

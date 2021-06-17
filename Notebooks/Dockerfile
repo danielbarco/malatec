@@ -12,22 +12,27 @@ RUN pip install -q keras_squeezenet2/
 RUN pip install tensorflow -U
 RUN pip install tensorboard -U
 
-RUN apt-get update 
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    protobuf-compiler \
+    wget
 EXPOSE 6006
 EXPOSE 8888
 
 #Object detection package tf
 RUN git clone --depth 1 https://github.com/tensorflow/models
-# intall protoc
-RUN apt install -y protobuf-compiler
 #RUN protoc models/research/object_detection/protos/*.proto --python_out=.
 COPY models/research/object_detection/packages/tf2/setup.py .
 # code fails if we do not install the following avro-python3
 RUN pip install avro-python3==1.9.2.1
 RUN python setup.py install
-RUN pip install wget
 
+#download and extract tf object detection model to new folder download
+WORKDIR /download
+RUN wget http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz 
+RUN tar -xf ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz 
 
 # RUN tensorboard --logdir logs
 # RUN apt-get install -y libgl1-mesa-glxs

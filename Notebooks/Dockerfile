@@ -21,11 +21,14 @@ EXPOSE 8888
 RUN git clone --depth 1 https://github.com/tensorflow/models
 # intall protoc
 RUN apt install -y protobuf-compiler
-WORKDIR /models/research/
-# RUN protoc --version
-RUN protoc object_detection/protos/*.proto --python_out=.
-RUN cp object_detection/packages/tf2/setup.py .
-RUN python -m pip install .
+#RUN protoc models/research/object_detection/protos/*.proto --python_out=.
+COPY models/research/object_detection/packages/tf2/setup.py .
+# code fails if we do not install the following avro-python3
+RUN pip install avro-python3==1.9.2.1
+RUN python setup.py install
+RUN pip install wget
+
+
 # RUN tensorboard --logdir logs
 # RUN apt-get install -y libgl1-mesa-glxs
 # RUN git clone https://github.com/daviddexter/keras_squeezenet2

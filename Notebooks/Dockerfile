@@ -22,12 +22,12 @@ EXPOSE 6006
 EXPOSE 8888
 
 #Object detection package tf
-RUN git clone --depth 1 https://github.com/tensorflow/models
+RUN git clone --depth 1 https://github.com/tensorflow/models && cp models/research/object_detection/packages/tf2/setup.py .
 #RUN protoc models/research/object_detection/protos/*.proto --python_out=.
-COPY models/research/object_detection/packages/tf2/setup.py .
+#COPY models/research/object_detection/packages/tf2/setup.py .
 # code fails if we do not install the following avro-python3
-RUN pip install avro-python3==1.9.2.1
-RUN python setup.py install
+#RUN pip install avro-python3==1.9.2.1
+#RUN python setup.py install
 
 #download and extract tf object detection model to new folder download
 WORKDIR /download

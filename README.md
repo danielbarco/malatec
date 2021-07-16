@@ -63,12 +63,3 @@ Folder Structure looks something like this
 └── ...
 ```
 Made with ❤️ in Switzerland ⛰️
-
-
-
-
-
-
-
-
-
